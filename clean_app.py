@@ -40,168 +40,10 @@ st.markdown("""
         gap: 0rem;
     }
 
-    /* 3. FORCE WHITE BACKGROUND (Fixes Black Stripe) */
+    /* 3. FORCE WHITE BACKGROUND & REMOVE SCROLLBAR */
     .stApp {
         background-color: #ffffff !important;
-    }
-    
-    /* 4. CUSTOM TOP BAR STYLING */
-    .tv-header {
-        background-color: #ffffff;
-        border-bottom: 1px solid #e0e3eb;
-        padding: 12px 20px;
-        display: flex;
-        align-items: center;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    }
-    
-    .tv-symbol-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-right: 20px;
-    }
-    
-    .tv-icon {
-        width: 28px;
-        height: 28px;
-        background-color: #f0f3fa;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-    }
-    
-    .tv-symbol {
-        font-size: 18px;
-        font-weight: 600;
-        color: #131722;
-    }
-    
-    .tv-exchange {
-        font-size: 12px;
-        color: #787b86;
-        margin-left: 5px;
-        font-weight: 400;
-        background: #f0f3fa;
-        padding: 2px 6px;
-        border-radius: 4px;
-    }
-    
-    .tv-price-group {
-        display: flex;
-        align-items: baseline;
-        gap: 10px;
-    }
-    
-    .tv-price {
-        font-size: 20px;
-        font-weight: 600;
-        color: #f23645; /* Red for down */
-    }
-    
-    .tv-change {
-        font-size: 14px;
-        color: #f23645;
-        font-weight: 500;
-    }
-    
-    /* BUTTONS */
-    .tv-btn-group {
-        margin-left: 20px;
-        display: flex;
-        gap: 8px;
-    }
-    
-    .tv-btn-sell {
-        background-color: #fff2f4;
-        color: #f23645;
-        border: 1px solid #fff2f4;
-        padding: 6px 16px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 12px;
-        cursor: pointer;
-    }
-    
-    .tv-btn-buy {
-        background-color: #e8f5e9; /* Light green */
-        color: #089981;
-        border: 1px solid #e8f5e9;
-        padding: 6px 16px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 12px;
-        cursor: pointer;
-    }
-    
-    /* TIMEFRAME TOOLBAR STYLING */
-    .stButton button {
-        background-color: transparent;
-        border: none;
-        color: #131722;
-        font-weight: 600;
-        font-size: 13px;
-        padding: 4px 8px;
-    }
-    .stButton button:hover {
-        background-color: #f0f3fa;
-        color: #2962ff;
-    }
-    .stButton button:focus {
-        background-color: transparent;
-        color: #2962ff;
-        border: none;
-        box-shadow: none;
-    }
-</style>
-""", unsafe_allow_html=True)
-import streamlit as st
-from streamlit_lightweight_charts import renderLightweightCharts
-import pandas as pd
-import numpy as np
-import datetime
-
-# -----------------------------------------------------------------------------
-# 1. PAGE CONFIGURATION (Must be first)
-# -----------------------------------------------------------------------------
-st.set_page_config(
-    layout="wide", 
-    page_title="TradingView Replica",
-    initial_sidebar_state="collapsed"
-)
-
-# Initialize Session State for Timeframe
-if 'timeframe' not in st.session_state:
-    st.session_state.timeframe = '1D'
-
-# -----------------------------------------------------------------------------
-# 2. AGGRESSIVE CSS STYLING (The "Clean" Look)
-# -----------------------------------------------------------------------------
-st.markdown("""
-<style>
-    /* 1. REMOVE STREAMLIT BRANDING & PADDING */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    .block-container {
-        padding-top: 0rem !important;
-        padding-bottom: 0rem !important;
-        padding-left: 0rem !important;
-        padding-right: 0rem !important;
-        max-width: 100% !important;
-    }
-    
-    /* 2. REMOVE GAPS */
-    div[data-testid="stVerticalBlock"] {
-        gap: 0rem;
-    }
-
-    /* 3. FORCE WHITE BACKGROUND (Fixes Black Stripe) */
-    .stApp {
-        background-color: #ffffff !important;
+        overflow: hidden !important; /* Disable scrolling */
     }
     
     /* 4. CUSTOM TOP BAR STYLING */
@@ -504,7 +346,7 @@ series = [
 renderLightweightCharts([
     {
         "chart": {
-            "height": 850,
+            "height": 750, # Adjusted to fit screen without scrolling
             **chartOptions
         },
         "series": series
