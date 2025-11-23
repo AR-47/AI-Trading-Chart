@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+/client/node_modules
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.venv/
+env/
+*.egg-info/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Build output
+dist/
+build/
+*.spec
+/client/dist
+/client/build
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# Model files (too large for git)
+models/*.h5
+models/*.pkl
+*.h5
+*.pkl
+*.pt
+*.onnx
+
+# Data files
+data/*.csv
+*.csv
+*.xlsx
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# React/Vite
+.eslintcache
+coverage/
+/client/.vite/
+*.local
+
+# Flask
+instance/
+.webassets-cache
