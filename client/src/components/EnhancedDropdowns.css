@@ -1,0 +1,80 @@
+/* Enhanced Dropdown Styling - Clean & Dark */
+
+.symbol-selector,
+.timeframe-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(19, 23, 34, 0.4);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s ease;
+}
+
+.symbol-selector:hover,
+.timeframe-selector:hover {
+    background: rgba(30, 34, 45, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.selector-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    min-width: 95px;
+}
+
+.symbol-dropdown,
+.timeframe-dropdown {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 6px 24px 6px 8px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='rgba(255,255,255,0.4)' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 10px;
+}
+
+.symbol-dropdown:hover,
+.timeframe-dropdown:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.symbol-dropdown:focus,
+.timeframe-dropdown:focus {
+    outline: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+/* Dropdown options styling */
+.symbol-dropdown option,
+.timeframe-dropdown option {
+    background-color: #1a1e27;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 8px;
+}
+
+.symbol-dropdown option:hover,
+.timeframe-dropdown option:hover {
+    background-color: #242933;
+}
+
+/* Icon styling */
+.symbol-selector svg,
+.timeframe-selector svg {
+    color: rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}

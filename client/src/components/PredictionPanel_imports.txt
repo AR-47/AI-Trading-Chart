@@ -1,0 +1,4 @@
+import React, { useState } from 'react';
+import { TrendingUp, TrendingDown, Activity, Brain, Clock } from 'lucide-react';
+import './PredictionPanel.css';
+import './EnhancedDropdowns.css';

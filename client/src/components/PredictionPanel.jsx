@@ -3,6 +3,7 @@ import { TrendingUp, TrendingDown, Activity, Brain, Clock } from 'lucide-react';
 import { PredictionPanelSkeleton } from './SkeletonLoader';
 import './PredictionPanel.css';
 import './PredictionPanelAnimations.css';
+import './EnhancedDropdowns.css';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
     const [timeframe, setTimeframe] = useState('1d');
