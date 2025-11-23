@@ -5,12 +5,12 @@ def merge_datasets():
     print("🔄 Merging BTC and ETH data (Preserving EVERYTHING)...")
     
     # 1. Load both files
-    if not os.path.exists('data/BTC_USD.csv') or not os.path.exists('data/ETH_USD.csv'):
+    if not os.path.exists('TradingProject\data\BTC_USD.csv') or not os.path.exists('TradingProject\data\ETH_USD.csv'):
         print("❌ Error: Missing CSV files. Run data_engine.py first!")
         return
 
-    btc = pd.read_csv('data/BTC_USD.csv')
-    eth = pd.read_csv('data/ETH_USD.csv')
+    btc = pd.read_csv('TradingProject\data\BTC_USD.csv')
+    eth = pd.read_csv('TradingProject\data\ETH_USD.csv')
     
     # 2. Rename columns explicitly so we know which is which
     # We prefix every column with the coin name
@@ -22,9 +22,9 @@ def merge_datasets():
     merged = pd.merge(btc, eth, on='Date', how='inner')
     
     # 4. Save
-    merged.to_csv('data/MARKET_MASTER.csv', index=False)
+    merged.to_csv('TradingProject\data\MARKET_MASTER.csv', index=False)
     
-    print(f"✅ Success! Created 'data/MARKET_MASTER.csv'.")
+    print(f"✅ Success! Created 'TradingProject\data\MARKET_MASTER.csv'.")
     print(f"   Rows: {len(merged)}")
     print(f"   Columns: {list(merged.columns)}")
     print("-" * 30)

@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 # We will store data in a 'data' folder
 DATA_DIR = 'TradingProject/data'
 # Tickers to track (Yahoo Finance format)
-SYMBOLS = ['BTC-USD', 'ETH-USD']
-START_DATE = "2015-01-01"
+SYMBOLS = ['BTC-USD']
+START_DATE = "2012-01-01"
 
 def ensure_data_dir():
     """Creates the data folder if it doesn't exist."""
@@ -41,7 +41,7 @@ def update_dataset(symbol):
     last_date = get_last_date(file_path)
     
     if last_date is None:
-        # Scenario A: No data exists. Download from 2015.
+        # Scenario A: No data exists. Download from 2012.
         print(f"🆕 {symbol}: No local data found. Downloading from {START_DATE}...")
         download_start = START_DATE
         mode = 'w' # Write mode
@@ -76,6 +76,9 @@ def update_dataset(symbol):
         
         # Flatten multi-index columns if they exist (common yfinance issue)
         df.columns = [col[0] if isinstance(col, tuple) else col for col in df.columns]
+        
+        # Rename columns with BTC prefix
+        df.columns = ['Date', 'BTC_Open', 'BTC_High', 'BTC_Low', 'BTC_Close', 'BTC_Volume']
         
         # formatting date to standard string
         df['Date'] = df['Date'].dt.strftime('%Y-%m-%d')
