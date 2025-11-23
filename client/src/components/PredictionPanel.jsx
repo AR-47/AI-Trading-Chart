@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, Activity, Brain, Clock } from 'lucide-react';
+import { PredictionPanelSkeleton } from './SkeletonLoader';
 import './PredictionPanel.css';
+import './PredictionPanelAnimations.css';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
     const [timeframe, setTimeframe] = useState('1d');
@@ -105,10 +107,7 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
 
             <div className="prediction-content">
                 {loading ? (
-                    <div className="loading-state">
-                        <div className="spinner" />
-                        <p>Processing market data...</p>
-                    </div>
+                    <PredictionPanelSkeleton />
                 ) : prediction ? (
                     <>
                         <div className="current-price-section">

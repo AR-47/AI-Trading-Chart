@@ -1,0 +1,262 @@
+/* Enhanced Animations and Transitions - Add to existing CSS */
+
+/* Smooth transitions for dropdowns */
+.symbol-dropdown,
+.timeframe-dropdown {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.symbol-dropdown:hover,
+.timeframe-dropdown:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(41, 98, 255, 0.15);
+}
+
+/* Price display animations */
+.price-display {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.price-display.positive {
+    text-shadow: 0 0 20px rgba(8, 153, 129, 0.3);
+    animation: priceFlash 0.6s ease-in-out;
+}
+
+.price-display.negative {
+    text-shadow: 0 0 20px rgba(242, 54, 69, 0.3);
+    animation: priceFlash 0.6s ease-in-out;
+}
+
+@keyframes priceFlash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animated confidence bar */
+.confidence-fill {
+    animation: fillBar 1s ease-out forwards;
+    box-shadow: 0 0 10px rgba(8, 153, 129, 0.5);
+}
+
+@keyframes fillBar {
+    from {
+        width: 0%;
+    }
+}
+
+/* Change indicator with bounce */
+.change-indicator {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Pulse animation for live badge - enhanced */
+.pulse-dot {
+    animation: pulseDot 2s ease-in-out infinite;
+    box-shadow: 0 0 0 0 var(--green);
+}
+
+@keyframes pulseDot {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(8, 153, 129, 0.7);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(0.95);
+        box-shadow: 0 0 0 6px rgba(8, 153, 129, 0);
+    }
+}
+
+/* Status badge floating animation */
+.status-active {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
+/* Sentiment bar animated fill */
+.sentiment-bar {
+    animation: fillSentiment 1.2s ease-out forwards;
+}
+
+@keyframes fillSentiment {
+    from {
+        width: 0%;
+    }
+}
+
+/* Sentiment bar glow effect */
+.sentiment-bar.bullish {
+    box-shadow: 0 0 10px rgba(8, 153, 129, 0.5);
+}
+
+.sentiment-bar.bearish {
+    box-shadow: 0 0 10px rgba(242, 54, 69, 0.5);
+}
+
+/* Driver items stagger animation */
+.driver-item {
+    animation: slideInRight 0.5s ease-out backwards;
+}
+
+.driver-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.driver-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.driver-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Metric cards entrance */
+.metric {
+    animation: fadeInScale 0.5s ease-out backwards;
+}
+
+.metric:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.metric:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.metric:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Analysis note slide in */
+.analysis-note {
+    animation: slideInBottom 0.6s ease-out;
+}
+
+@keyframes slideInBottom {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover effects for interactive elements */
+.selector-label,
+.section-header {
+    transition: color 0.3s ease;
+}
+
+/* Icons micro-animation on hover */
+.panel-title svg,
+.section-header svg {
+    transition: transform 0.3s ease;
+}
+
+.panel-title:hover svg,
+.section-header:hover svg {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Smooth color transitions */
+.driver-value {
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.driver-value:hover {
+    transform: translateX(3px);
+}
+
+/* Panel content animation */
+.prediction-content>* {
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
