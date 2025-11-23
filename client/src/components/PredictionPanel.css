@@ -505,3 +505,80 @@
 }
 
 /* End of PredictionPanel styles */
+
+/* Enhanced Status Indicator */
+.status-active {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.status-active.positive {
+    color: #00E676;
+    /* Neon Green */
+    background: rgba(0, 230, 118, 0.15);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    box-shadow: 0 0 15px rgba(0, 230, 118, 0.1);
+}
+
+.status-active.negative {
+    color: #FF1744;
+    /* Neon Red */
+    background: rgba(255, 23, 68, 0.15);
+    border: 1px solid rgba(255, 23, 68, 0.3);
+    box-shadow: 0 0 15px rgba(255, 23, 68, 0.1);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.status-active.positive .pulse-dot {
+    background-color: #00E676;
+    box-shadow: 0 0 10px #00E676;
+    animation: pulse-green 2s infinite;
+}
+
+.status-active.negative .pulse-dot {
+    background-color: #FF1744;
+    box-shadow: 0 0 10px #FF1744;
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(0, 230, 118, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 230, 118, 0);
+    }
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(255, 23, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 23, 68, 0);
+    }
+}

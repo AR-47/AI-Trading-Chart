@@ -66,7 +66,7 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                     {loading ? (
                         <span className="status-loading">Analyzing...</span>
                     ) : (
-                        <span className="status-active">
+                        <span className={`status-active ${trend?.isPositive ? 'positive' : 'negative'}`}>
                             <div className="pulse-dot" />
                             Live
                         </span>

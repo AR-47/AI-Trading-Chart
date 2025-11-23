@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './TradingViewChart.css';
 
-function TradingViewChart({ currentSymbol, timeframe }) {
+function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     const containerRef = useRef(null);
     const widgetRef = useRef(null);
 
