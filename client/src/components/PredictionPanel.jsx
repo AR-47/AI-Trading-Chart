@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Activity, Brain, Clock } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, Brain, Clock, X } from 'lucide-react';
 import { PredictionPanelSkeleton } from './SkeletonLoader';
 import './PredictionPanel.css';
 import './PredictionPanelAnimations.css';
 import './EnhancedDropdowns.css';
+import FeatureImportance from './FeatureImportance';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
     const [timeframe, setTimeframe] = useState('1d');
+    const [showExplanation, setShowExplanation] = useState(false);
 
     const timeframeOptions = [
         { value: '30m', label: '30 Min' },
@@ -119,7 +121,16 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                         </div>
 
                         <div className="predicted-price-section">
-                            <label>{getTimeframeLabel()} Prediction</label>
+                            <div className="prediction-header-row">
+                                <label>{getTimeframeLabel()} Prediction</label>
+                                <button
+                                    className="explain-btn"
+                                    onClick={() => setShowExplanation(true)}
+                                >
+                                    <Brain size={12} />
+                                    Explain
+                                </button>
+                            </div>
                             <div className={`price-display ${trend?.isPositive ? 'positive' : 'negative'}`}>
                                 ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                             </div>
@@ -213,6 +224,21 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                                 }
                             </span>
                         </div>
+
+                        {/* Explanation Modal */}
+                        {showExplanation && (
+                            <div className="modal-overlay" onClick={() => setShowExplanation(false)}>
+                                <div className="modal-content" onClick={e => e.stopPropagation()}>
+                                    <div className="modal-header">
+                                        <h3>AI Analysis</h3>
+                                        <button className="close-btn" onClick={() => setShowExplanation(false)}>
+                                            <X size={18} />
+                                        </button>
+                                    </div>
+                                    <FeatureImportance trend={trend} />
+                                </div>
+                            </div>
+                        )}
                     </>
                 ) : (
                     <div className="error-state">
