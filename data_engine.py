@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # CONFIGURATION
 # We will store data in a 'data' folder
-DATA_DIR = 'TradingProject/data'
+DATA_DIR = 'data'
 # Tickers to track (Yahoo Finance format)
 SYMBOLS = ['BTC-USD']
 START_DATE = "2012-01-01"
