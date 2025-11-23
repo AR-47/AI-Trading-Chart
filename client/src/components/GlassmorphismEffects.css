@@ -1,0 +1,402 @@
+/* ===================================
+   PHASE 2: GLASSMORPHISM & NEON EFFECTS
+   =================================== */
+
+/* ============= GLASSMORPHISM UTILITIES ============= */
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+}
+
+.glass-panel-light {
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(42, 46, 57, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-2px);
+}
+
+/* ============= GRADIENT BACKGROUNDS ============= */
+
+.gradient-bg-bullish {
+    background: var(--green-gradient);
+}
+
+.gradient-bg-bearish {
+    background: var(--red-gradient);
+}
+
+.gradient-bg-ai {
+    background: var(--ai-gradient);
+}
+
+.gradient-border-bullish {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--bg-tertiary), var(--bg-tertiary)) padding-box,
+        var(--green-gradient) border-box;
+    border-radius: 8px;
+}
+
+.gradient-border-bearish {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--bg-tertiary), var(--bg-tertiary)) padding-box,
+        var(--red-gradient) border-box;
+    border-radius: 8px;
+}
+
+.gradient-border-ai {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--bg-tertiary), var(--bg-tertiary)) padding-box,
+        var(--ai-gradient) border-box;
+    border-radius: 8px;
+}
+
+/* ============= NEON GLOW EFFECTS ============= */
+
+.neon-glow-blue {
+    box-shadow: var(--neon-blue-glow);
+}
+
+.neon-glow-cyan {
+    box-shadow: var(--neon-cyan-glow);
+}
+
+.neon-glow-purple {
+    box-shadow: var(--neon-purple-glow);
+}
+
+.neon-glow-green {
+    box-shadow: var(--green-glow);
+}
+
+.neon-glow-green-strong {
+    box-shadow: var(--green-glow-strong);
+}
+
+.neon-glow-red {
+    box-shadow: var(--red-glow);
+}
+
+.neon-glow-red-strong {
+    box-shadow: var(--red-glow-strong);
+}
+
+.neon-glow-ai {
+    box-shadow: var(--ai-glow);
+}
+
+/* Animated Glow */
+.neon-pulse {
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px currentColor;
+    }
+
+    50% {
+        box-shadow: 0 0 25px currentColor, 0 0 40px currentColor;
+    }
+}
+
+/* ============= TEXT EFFECTS ============= */
+
+.text-gradient-bullish {
+    background: var(--green-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-bearish {
+    background: var(--red-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-ai {
+    background: var(--ai-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-neon-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+/* ============= ENHANCED BUTTONS ============= */
+
+.btn-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glass:hover {
+    background: rgba(42, 46, 57, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: var(--neon-blue-glow);
+    transform: translateY(-2px);
+}
+
+.btn-glass:active {
+    transform: translateY(0);
+}
+
+.btn-neon-blue {
+    background: rgba(41, 98, 255, 0.1);
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: var(--neon-blue-glow);
+    transition: all 0.3s ease;
+}
+
+.btn-neon-blue:hover {
+    background: rgba(41, 98, 255, 0.2);
+    box-shadow: 0 0 30px rgba(41, 98, 255, 0.7);
+}
+
+.btn-neon-green {
+    background: rgba(8, 153, 129, 0.1);
+    border: 1px solid var(--green);
+    color: var(--green-light);
+    box-shadow: var(--green-glow);
+    transition: all 0.3s ease;
+}
+
+.btn-neon-green:hover {
+    background: rgba(8, 153, 129, 0.2);
+    box-shadow: var(--green-glow-strong);
+}
+
+.btn-neon-red {
+    background: rgba(242, 54, 69, 0.1);
+    border: 1px solid var(--red);
+    color: var(--red-light);
+    box-shadow: var(--red-glow);
+    transition: all 0.3s ease;
+}
+
+.btn-neon-red:hover {
+    background: rgba(242, 54, 69, 0.2);
+    box-shadow: var(--red-glow-strong);
+}
+
+/* ============= ENHANCED PANELS ============= */
+
+.panel-elevated {
+    background: var(--bg-elevated);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-accent);
+    transition: all 0.3s ease;
+}
+
+.panel-elevated:hover {
+    box-shadow: var(--shadow-elevated);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.panel-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============= DIVIDERS WITH GRADIENT ============= */
+
+.divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--border-accent) 50%,
+            transparent 100%);
+    margin: 16px 0;
+}
+
+.divider-gradient-glow {
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            var(--accent-cyan) 50%,
+            transparent 100%);
+    box-shadow: 0 0 10px var(--accent-cyan);
+    margin: 16px 0;
+}
+
+/* ============= ENHANCED BADGES ============= */
+
+.badge-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge-neon {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 15px currentColor;
+    animation: neonPulse 2s ease-in-out infinite;
+}
+
+/* ============= GRADIENT OVERLAYS ============= */
+
+.gradient-overlay-top {
+    position: relative;
+}
+
+.gradient-overlay-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.gradient-overlay-bottom {
+    position: relative;
+}
+
+.gradient-overlay-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(0deg, var(--bg-dark) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ============= SHIMMER/SHINE EFFECTS ============= */
+
+.shimmer-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            transparent 100%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    to {
+        left: 100%;
+    }
+}
+
+/* ============= ENHANCED SCROLLBAR ============= */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+    border-radius: 5px;
+    border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-blue-light) 0%, var(--accent-purple) 100%);
+    box-shadow: var(--neon-blue-glow);
+}
+
+/* ============= PARTICLE BACKGROUND EFFECT ============= */
+
+.particle-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.05;
+    background-image:
+        radial-gradient(circle at 20% 50%, var(--accent-cyan) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, var(--accent-purple) 1px, transparent 1px),
+        radial-gradient(circle at 50% 20%, var(--accent-blue) 1px, transparent 1px);
+    background-size: 400px 400px, 500px 500px, 300px 300px;
+    background-position: 0 0, 100px 100px, 200px 200px;
+    animation: particleFloat 60s linear infinite;
+}
+
+@keyframes particleFloat {
+    to {
+        background-position: 400px 400px, 500px 500px, 600px 600px;
+    }
+}

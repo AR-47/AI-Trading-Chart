@@ -3,12 +3,41 @@
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #0B0E11 0%, #131722 50%, #0B0E11 100%);
+}
+
+/* Subtle animated background */
+.app::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(41, 98, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(156, 39, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
+    background-size: 800px 800px, 600px 600px, 700px 700px;
+    background-position: 0 0, 100px 100px, 200px 200px;
+    animation: backgroundFloat 60s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes backgroundFloat {
+    to {
+        background-position: 800px 800px, 600px 600px, 700px 700px;
+    }
 }
 
 .main-content {
     display: flex;
     flex: 1;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 .chart-section {
@@ -16,15 +45,35 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
+}
+
+/* Add subtle overlay to chart section */
+.chart-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-cyan) 50%, transparent 100%);
+    box-shadow: 0 0 10px var(--accent-cyan);
+    opacity: 0.5;
+    z-index: 1;
 }
 
 .side-panels {
     width: 360px;
-    background-color: var(--bg-dark);
-    border-left: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: 2;
 }
 
 @media (max-width: 1024px) {
@@ -35,7 +84,7 @@
     .side-panels {
         width: 100%;
         border-left: none;
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid var(--glass-border);
         max-height: 400px;
     }
 }

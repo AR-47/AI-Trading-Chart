@@ -1,0 +1,258 @@
+/* Enhanced Prediction Panel with Glassmorphism & Gradients */
+
+/* Override panel background with glass effect */
+.prediction-panel {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+}
+
+/* Enhanced selectors with glass effect */
+.symbol-selector,
+.timeframe-selector {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border-accent) !important;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.symbol-selector:hover,
+.timeframe-selector:hover {
+    background: var(--glass-bg-light) !important;
+    border-color: var(--glass-border) !important;
+    box-shadow: var(--shadow-md);
+}
+
+/* Status badge with neon glow */
+.status-active {
+    background: rgba(8, 153, 129, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(8, 153, 129, 0.3);
+    box-shadow: var(--green-glow);
+}
+
+/* Enhanced pulse dot */
+.pulse-dot {
+    box-shadow: 0 0 0 0 rgba(8, 153, 129, 0.7), var(--green-glow);
+}
+
+/* Price displays with gradient text */
+.price-display.positive {
+    background: var(--green-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(8, 153, 129, 0.5));
+}
+
+.price-display.negative {
+    background: var(--red-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(242, 54, 69, 0.5));
+}
+
+/* Enhanced confidence bar with gradient */
+.confidence-fill {
+    background: var(--green-gradient) !important;
+    box-shadow: var(--green-glow);
+    position: relative;
+}
+
+.confidence-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Sentiment gauge with glass effect */
+.sentiment-gauge {
+    background: var(--glass-bg-light) !important;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Enhanced sentiment bars with glow */
+.sentiment-bar.bullish {
+    background: var(--green-gradient) !important;
+    box-shadow: var(--green-glow-strong);
+}
+
+.sentiment-bar.bearish {
+    background: var(--red-gradient) !important;
+    box-shadow: var(--red-glow-strong);
+}
+
+/* Metrics grid with elevated cards */
+.metric {
+    background: var(--bg-elevated);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.metric:hover {
+    background: va(--glass-bg-light);
+    border-color: var(--glass-border);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Gradient border for metrics */
+.metric-value.highlight {
+    background: var(--ai-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+}
+
+/* Analysis note with glass effect */
+.analysis-note {
+    background: var(--glass-bg-light) !important;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Section headers with gradient underline */
+.section-header {
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--ai-gradient);
+    border-radius: 2px;
+    box-shadow: var(--ai-glow);
+}
+
+/* Driver values with neon effect */
+.driver-value.positive {
+    color: var(--green-light) !important;
+    text-shadow: var(--green-glow);
+}
+
+.driver-value.negative {
+    color: var(--red-light) !important;
+    text-shadow: var(--red-glow);
+}
+
+.driver-value.warning {
+    color: #FFB84D !important;
+    text-shadow: 0 0 10px rgba(255, 184, 77, 0.5);
+}
+
+/* Panel title with AI gradient */
+.panel-title {
+    position: relative;
+}
+
+.panel-title svg {
+    filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.6));
+}
+
+/* Dropdown enhancements */
+.symbol-dropdown:focus,
+.timeframe-dropdown:focus {
+    border-color: var(--neon-blue) !important;
+    box-shadow: var(--neon-blue-glow);
+}
+
+/* Change indicator with enhanced glow */
+.change-indicator.positive svg {
+    filter: drop-shadow(0 0 8px var(--green));
+}
+
+.change-indicator.negative svg {
+    filter: drop-shadow(0 0 8px var(--red));
+}
+
+/* Add subtle gradient to current price section */
+.current-price-section {
+    position: relative;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Enhanced predicted price section */
+.predicted-price-section {
+    position: relative;
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--glass-bg-light);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Add glow animation to predicted price */
+.predicted-price-section::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: var(--ai-gradient);
+    border-radius: 8px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.predicted-price-section:hover::before {
+    opacity: 0.2;
+}
+
+/* Drivers section with glass effect */
+.drivers-section {
+    background: var(--bg-elevated);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-sm);
+    margin-top: 16px;
+}
+
+/* Sentiment section enhancement */
+.sentiment-section {
+    background: var(--bg-elevated);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-accent);
+    box-shadow: var(--shadow-sm);
+    margin-top: 16px;
+}
