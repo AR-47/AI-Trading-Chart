@@ -1,16 +1,9 @@
 .feature-importance-container {
-    /* Container is now inside modal, so we remove background/border to blend in or keep it if we want a card look */
-    /* background: rgba(19, 23, 34, 0.4); */
-    /* border-radius: 16px; */
-    /* padding: 20px; */
-    /* border: 1px solid rgba(255, 255, 255, 0.05); */
-    /* backdrop-filter: blur(10px); */
     width: 100%;
 }
 
 .feature-header {
     display: none;
-    /* Hidden because modal header already has title */
 }
 
 .feature-list {
@@ -106,4 +99,37 @@
     100% {
         transform: translateX(100%);
     }
+}
+
+.analysis-summary {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-summary h4 {
+    color: var(--text-primary);
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.analysis-summary p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.analysis-summary strong {
+    color: var(--text-primary);
+}
+
+.analysis-summary strong.positive {
+    color: #00E676;
+}
+
+.analysis-summary strong.negative {
+    color: #FF1744;
 }
