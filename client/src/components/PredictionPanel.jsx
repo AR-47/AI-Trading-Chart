@@ -118,8 +118,6 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                             </div>
                         </div>
 
-                        <div className="prediction-arrow">→</div>
-
                         <div className="predicted-price-section">
                             <label>{getTimeframeLabel()} Prediction</label>
                             <div className={`price-display ${trend?.isPositive ? 'positive' : 'negative'}`}>
@@ -162,15 +160,6 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                             </div>
                         </div>
 
-                        <div className="analysis-note">
-                            <Activity size={14} />
-                            <span>
-                                {trend?.isPositive
-                                    ? `Model suggests bullish momentum in the next ${getTimeframeLabel().toLowerCase()}`
-                                    : `Model indicates potential pullback in the next ${getTimeframeLabel().toLowerCase()}`
-                                }
-                            </span>
-                        </div>
 
                         {/* Market Sentiment Section */}
                         <div className="sentiment-section">
@@ -213,6 +202,16 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                                     <span className="driver-value warning">Moderate</span>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="analysis-note">
+                            <Activity size={14} />
+                            <span>
+                                {trend?.isPositive
+                                    ? `Model suggests bullish momentum in the next ${getTimeframeLabel().toLowerCase()}`
+                                    : `Model indicates potential pullback in the next ${getTimeframeLabel().toLowerCase()}`
+                                }
+                            </span>
                         </div>
                     </>
                 ) : (
