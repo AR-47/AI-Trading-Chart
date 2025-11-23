@@ -1,0 +1,218 @@
+.trading-panel {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+}
+
+.order-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    background-color: var(--bg-tertiary);
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.tab {
+    flex: 1;
+    padding: 8px 16px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.tab:hover {
+    color: var(--text-primary);
+}
+
+.tab.active {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+}
+
+.side-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.side-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.side-btn.buy {
+    background-color: rgba(8, 153, 129, 0.15);
+    color: var(--green);
+    border: 1px solid transparent;
+}
+
+.side-btn.buy:hover {
+    background-color: rgba(8, 153, 129, 0.25);
+}
+
+.side-btn.buy.active {
+    background-color: var(--green);
+    color: white;
+    border-color: var(--green);
+}
+
+.side-btn.sell {
+    background-color: rgba(242, 54, 69, 0.15);
+    color: var(--red);
+    border: 1px solid transparent;
+}
+
+.side-btn.sell:hover {
+    background-color: rgba(242, 54, 69, 0.25);
+}
+
+.side-btn.sell.active {
+    background-color: var(--red);
+    color: white;
+    border-color: var(--red);
+}
+
+.order-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.form-input {
+    padding: 12px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 15px;
+    font-weight: 500;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: var(--accent-blue);
+}
+
+.order-summary {
+    background-color: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.summary-row .value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.summary-row.total {
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.summary-row.total .value {
+    color: var(--accent-blue);
+    font-size: 16px;
+}
+
+.order-btn {
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-btn.buy {
+    background-color: var(--green);
+    color: white;
+}
+
+.order-btn.buy:hover {
+    background-color: #0aaf99;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(8, 153, 129, 0.3);
+}
+
+.order-btn.sell {
+    background-color: var(--red);
+    color: white;
+}
+
+.order-btn.sell:hover {
+    background-color: #ff4757;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(242, 54, 69, 0.3);
+}
+
+.quick-amounts {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.quick-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.quick-btn {
+    flex: 1;
+    padding: 6px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.quick-btn:hover {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+}
