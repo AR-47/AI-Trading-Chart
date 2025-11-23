@@ -20,7 +20,7 @@
 
 .side-panels {
     width: 360px;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-dark);
     border-left: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;

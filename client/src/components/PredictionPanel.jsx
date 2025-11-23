@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, Activity, Brain, Clock } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import './PredictionPanel.css';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
@@ -170,6 +171,135 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                                     : `Model indicates potential pullback in the next ${getTimeframeLabel().toLowerCase()}`
                                 }
                             </span>
+                        </div>
+
+                        {/* Market Sentiment Section */}
+                        <div className="sentiment-section">
+                            <div className="section-header">
+                                <TrendingUp size={14} />
+                                <span>Market Sentiment</span>
+                            </div>
+                            <div className="sentiment-gauge">
+                                <div className="sentiment-label">
+                                    {trend?.isPositive ? 'Bullish' : 'Bearish'}
+                                </div>
+                                <div className="sentiment-bar-container">
+                                    <div
+                                        className={`sentiment-bar ${trend?.isPositive ? 'bullish' : 'bearish'}`}
+                                        style={{ width: `${Math.min(Math.abs(parseFloat(trend?.changePercent || 0)) * 20 + 50, 100)}%` }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Seasonals Section */}
+                        <div className="seasonals-section">
+                            <div className="section-header">
+                                <Clock size={14} />
+                                <span>Seasonals</span>
+                            </div>
+                            <div className="seasonals-chart">
+                                <ResponsiveContainer width="100%" height={120}>
+                                    <LineChart data={[
+                                        { month: 'Jan', y23: 40, y24: 65, y25: 45 },
+                                        { month: 'Feb', y23: 45, y24: 70, y25: 52 },
+                                        { month: 'Mar', y23: 35, y24: 60, y25: 48 },
+                                        { month: 'Apr', y23: 50, y24: 75, y25: 60 },
+                                        { month: 'May', y23: 55, y24: 68, y25: 58 },
+                                        { month: 'Jun', y23: 48, y24: 72, y25: 65 },
+                                    ]}>
+                                        <XAxis dataKey="month" hide />
+                                        <YAxis hide domain={['dataMin', 'dataMax']} />
+                                        <Tooltip
+                                            contentStyle={{ backgroundColor: '#1E222D', border: 'none', fontSize: '12px' }}
+                                            itemStyle={{ fontSize: '12px' }}
+                                        />
+                                        <Line type="monotone" dataKey="y23" stroke="#F7B500" strokeWidth={2} dot={false} />
+                                        <Line type="monotone" dataKey="y24" stroke="#089981" strokeWidth={2} dot={false} />
+                                        <Line type="monotone" dataKey="y25" stroke="#2962FF" strokeWidth={2} dot={true} />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                                <div className="chart-legend">
+                                    <span style={{ color: '#2962FF' }}>● 2025</span>
+                                    <span style={{ color: '#089981' }}>● 2024</span>
+                                    <span style={{ color: '#F7B500' }}>● 2023</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Technicals Section */}
+                        <div className="technicals-section">
+                            <div className="section-header">
+                                <Activity size={14} />
+                                <span>Technicals</span>
+                            </div>
+                            <div className="technicals-gauge-container">
+                                <div className="gauge-labels">
+                                    <span className="sell">Sell</span>
+                                    <span className="neutral">Neutral</span>
+                                    <span className="buy">Buy</span>
+                                </div>
+                                <div className="gauge-wrapper">
+                                    <svg viewBox="0 0 200 100" className="gauge-svg">
+                                        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#2A2E39" strokeWidth="12" />
+                                        <path
+                                            d="M 20 100 A 80 80 0 0 1 180 100"
+                                            fill="none"
+                                            stroke="url(#gaugeGradient)"
+                                            strokeWidth="12"
+                                            strokeDasharray="251.2"
+                                            strokeDashoffset={251.2 * (1 - (prediction.confidence || 0.5))}
+                                            className="gauge-fill"
+                                        />
+                                        <defs>
+                                            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" stopColor="#F23645" />
+                                                <stop offset="50%" stopColor="#F7B500" />
+                                                <stop offset="100%" stopColor="#089981" />
+                                            </linearGradient>
+                                        </defs>
+                                        {/* Needle */}
+                                        <line
+                                            x1="100"
+                                            y1="100"
+                                            x2="100"
+                                            y2="30"
+                                            stroke="#D1D4DC"
+                                            strokeWidth="4"
+                                            transform={`rotate(${(prediction.confidence || 0.5) * 180 - 90} 100 100)`}
+                                            style={{ transition: 'transform 1s ease-out' }}
+                                        />
+                                        <circle cx="100" cy="100" r="6" fill="#D1D4DC" />
+                                    </svg>
+                                </div>
+                                <div className="technicals-status">
+                                    {prediction.confidence > 0.6 ? 'Strong Buy' : prediction.confidence < 0.4 ? 'Strong Sell' : 'Neutral'}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Key Drivers Section */}
+                        <div className="drivers-section">
+                            <div className="section-header">
+                                <Activity size={14} />
+                                <span>Key Drivers</span>
+                            </div>
+                            <div className="drivers-list">
+                                <div className="driver-item">
+                                    <span className="driver-name">Volume</span>
+                                    <span className="driver-value positive">High</span>
+                                </div>
+                                <div className="driver-item">
+                                    <span className="driver-name">Trend Strength</span>
+                                    <span className={`driver-value ${trend?.isPositive ? 'positive' : 'negative'}`}>
+                                        {trend?.isPositive ? 'Strong Buy' : 'Strong Sell'}
+                                    </span>
+                                </div>
+                                <div className="driver-item">
+                                    <span className="driver-name">Volatility</span>
+                                    <span className="driver-value warning">Moderate</span>
+                                </div>
+                            </div>
                         </div>
                     </>
                 ) : (
