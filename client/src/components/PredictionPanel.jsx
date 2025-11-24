@@ -4,12 +4,10 @@ import { PredictionPanelSkeleton } from './SkeletonLoader';
 import './PredictionPanel.css';
 import './PredictionPanelAnimations.css';
 import './EnhancedDropdowns.css';
-import FeatureImportance from './FeatureImportance';
 import BacktestModal from './BacktestModal';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
     const [timeframe, setTimeframe] = useState('1d');
-    const [showExplanation, setShowExplanation] = useState(false);
     const [showBacktest, setShowBacktest] = useState(false);
 
     const timeframeOptions = [
@@ -134,13 +132,6 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                         <div className="predicted-price-section">
                             <div className="prediction-header-row">
                                 <label>{getTimeframeLabel()} Prediction</label>
-                                <button
-                                    className="explain-btn"
-                                    onClick={() => setShowExplanation(true)}
-                                >
-                                    <Brain size={12} />
-                                    Explain
-                                </button>
                             </div>
                             <div className={`price-display ${trend?.isPositive ? 'positive' : 'negative'}`}>
                                 ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -235,21 +226,6 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                                 }
                             </span>
                         </div>
-
-                        {/* Explanation Modal */}
-                        {showExplanation && (
-                            <div className="modal-overlay" onClick={() => setShowExplanation(false)}>
-                                <div className="modal-content" onClick={e => e.stopPropagation()}>
-                                    <div className="modal-header">
-                                        <h3>AI Analysis</h3>
-                                        <button className="close-btn" onClick={() => setShowExplanation(false)}>
-                                            <X size={18} />
-                                        </button>
-                                    </div>
-                                    <FeatureImportance trend={trend} />
-                                </div>
-                            </div>
-                        )}
                     </>
                 ) : (
                     <div className="error-state">
