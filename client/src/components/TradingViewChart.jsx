@@ -87,8 +87,8 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
             rightPriceScale: {
                 borderColor: '#2B2B43',
                 scaleMargins: {
-                    top: 0.1,
-                    bottom: 0.25,
+                    top: 0.05,
+                    bottom: 0.08,  // Only 8% space for volume at bottom
                 },
             },
             timeScale: {
@@ -124,7 +124,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
             },
             priceScaleId: 'volume',
             scaleMargins: {
-                top: 0.95,  // 5% height for volumes (1.0 - 0.95 = 0.05)
+                top: 0.92,  // Start at 92%, use bottom 8% space
                 bottom: 0,
             },
         });
