@@ -1,114 +1,226 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createChart } from 'lightweight-charts';
 import './TradingViewChart.css';
 
 function TradingViewChart({ currentSymbol, timeframe, prediction }) {
-    const containerRef = useRef(null);
-    const widgetRef = useRef(null);
+    const chartContainerRef = useRef(null);
+    const chartRef = useRef(null);
+    const candlestickSeriesRef = useRef(null);
+    const volumeSeriesRef = useRef(null);
+    const predictionLineRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // Map prediction timeframes to TradingView intervals
-    const getChartInterval = (tf) => {
-        const intervalMap = {
-            '30m': '30',    // 30 minutes
-            '1h': '60',     // 1 hour
-            '4h': '240',    // 4 hours
-            '1d': 'D',      // 1 day
-            '1w': 'W',      // 1 week
-            '1M': 'M'       // 1 month
+    // Map timeframes to Binance intervals
+    const getInterval = (tf) => {
+        const map = {
+            '30m': '30m',
+            '1h': '1h',
+            '4h': '4h',
+            '1d': '1d',
+            '1w': '1w',
+            '1M': '1M'
         };
-        return intervalMap[tf] || 'D';
+        return map[tf] || '1d';
     };
 
+    // Fetch candlestick data from Binance
+    const fetchChartData = async (symbol, interval) => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(
+                `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=300`
+            );
+            const data = await response.json();
+
+            // Parse Binance data: [time, open, high, low, close, volume, ...]
+            const candlestickData = data.map(item => ({
+                time: item[0] / 1000, // Convert to seconds
+                open: parseFloat(item[1]),
+                high: parseFloat(item[2]),
+                low: parseFloat(item[3]),
+                close: parseFloat(item[4])
+            }));
+
+            const volumeData = data.map(item => ({
+                time: item[0] / 1000,
+                value: parseFloat(item[5]),
+                color: parseFloat(item[4]) >= parseFloat(item[1])
+                    ? 'rgba(0, 230, 118, 0.4)' // Green volume for up candles
+                    : 'rgba(255, 23, 68, 0.4)'  // Red volume for down candles
+            }));
+
+            setIsLoading(false);
+            return { candlestickData, volumeData };
+        } catch (error) {
+            console.error('Error fetching chart data:', error);
+            setIsLoading(false);
+            return { candlestickData: [], volumeData: [] };
+        }
+    };
+
+    // Initialize chart
     useEffect(() => {
-        console.log(`Updating chart: Symbol=${currentSymbol}, Timeframe=${timeframe}`);
+        if (!chartContainerRef.current) return;
 
-        // Safely clear previous widget
-        if (widgetRef.current) {
-            try {
-                if (widgetRef.current.remove) {
-                    widgetRef.current.remove();
-                }
-            } catch (err) {
-                console.warn("Widget removal error:", err);
-            }
-            widgetRef.current = null;
-        }
+        // Create chart instance
+        const chart = createChart(chartContainerRef.current, {
+            layout: {
+                background: { color: '#131722' },
+                textColor: '#D9D9D9',
+            },
+            grid: {
+                vertLines: { color: '#1E222D' },
+                horzLines: { color: '#1E222D' },
+            },
+            crosshair: {
+                mode: 1,
+                vertLine: {
+                    width: 1,
+                    color: 'rgba(224, 227, 235, 0.1)',
+                    style: 0,
+                },
+                horzLine: {
+                    color: 'rgba(224, 227, 235, 0.1)',
+                    labelBackgroundColor: '#2962FF',
+                },
+            },
+            rightPriceScale: {
+                borderColor: '#2B2B43',
+                scaleMargins: {
+                    top: 0.1,
+                    bottom: 0.25,
+                },
+            },
+            timeScale: {
+                borderColor: '#2B2B43',
+                timeVisible: true,
+                secondsVisible: false,
+            },
+            handleScroll: {
+                mouseWheel: true,
+                pressedMouseMove: true,
+            },
+            handleScale: {
+                axisPressedMouseMove: true,
+                mouseWheel: true,
+                pinch: true,
+            },
+        });
 
-        // Explicitly clear the container to ensure no artifacts remain
-        if (containerRef.current) {
-            containerRef.current.innerHTML = '';
-        }
+        // Add candlestick series
+        const candlestickSeries = chart.addCandlestickSeries({
+            upColor: '#00E676',
+            downColor: '#FF1744',
+            borderUpColor: '#00E676',
+            borderDownColor: '#FF1744',
+            wickUpColor: '#00E676',
+            wickDownColor: '#FF1744',
+        });
 
-        // Generate a unique ID for this specific chart instance
-        const uniqueId = `tradingview_${currentSymbol}_${timeframe}_${Date.now()}`;
+        // Add volume series
+        const volumeSeries = chart.addHistogramSeries({
+            priceFormat: {
+                type: 'volume',
+            },
+            priceScaleId: 'volume',
+            scaleMargins: {
+                top: 0.95,  // 5% height for volumes (1.0 - 0.95 = 0.05)
+                bottom: 0,
+            },
+        });
 
-        if (containerRef.current && window.TradingView) {
-            const interval = getChartInterval(timeframe);
-            console.log(`Setting chart interval to: ${interval}`);
+        chartRef.current = chart;
+        candlestickSeriesRef.current = candlestickSeries;
+        volumeSeriesRef.current = volumeSeries;
 
-            // Create a new div with the unique ID inside the container
-            const chartDiv = document.createElement("div");
-            chartDiv.id = uniqueId;
-            chartDiv.style.height = "100%";
-            chartDiv.style.width = "100%";
-            containerRef.current.appendChild(chartDiv);
-
-            try {
-                const widget = new window.TradingView.widget({
-                    autosize: true,
-                    symbol: `BINANCE:${currentSymbol}`,
-                    interval: interval,
-                    timezone: "Etc/UTC",
-                    theme: "dark",
-                    style: "1",
-                    locale: "en",
-                    toolbar_bg: "#1E222D",
-                    enable_publishing: false,
-                    hide_side_toolbar: false,
-                    allow_symbol_change: false,
-                    save_image: false,
-                    container_id: uniqueId,
-                    studies: [],
-                    backgroundColor: "#131722",
-                    gridColor: "#1E222D",
-                    hide_top_toolbar: false,
-                    hide_legend: false,
-                    withdateranges: true,
-                    range: "12M",
-                    details: true,
-                    hotlist: true,
-                    calendar: true,
-                    show_popup_button: true,
-                    popup_width: "1000",
-                    popup_height: "650",
-                    support_host: "https://www.tradingview.com"
+        // Handle resize
+        const handleResize = () => {
+            if (chartContainerRef.current && chartRef.current) {
+                chartRef.current.applyOptions({
+                    width: chartContainerRef.current.clientWidth,
+                    height: chartContainerRef.current.clientHeight,
                 });
-
-                widgetRef.current = widget;
-            } catch (err) {
-                console.error("Widget creation error:", err);
-            }
-        }
-
-        return () => {
-            if (widgetRef.current) {
-                try {
-                    if (widgetRef.current.remove) {
-                        widgetRef.current.remove();
-                    }
-                } catch (err) {
-                    console.warn("Widget cleanup error:", err);
-                }
-                widgetRef.current = null;
             }
         };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (chartRef.current) {
+                chartRef.current.remove();
+                chartRef.current = null;
+            }
+        };
+    }, []);
+
+    // Load data when symbol or timeframe changes
+    useEffect(() => {
+        if (!candlestickSeriesRef.current || !volumeSeriesRef.current) return;
+
+        const interval = getInterval(timeframe);
+
+        fetchChartData(currentSymbol, interval).then(({ candlestickData, volumeData }) => {
+            if (candlestickData.length > 0) {
+                candlestickSeriesRef.current.setData(candlestickData);
+                volumeSeriesRef.current.setData(volumeData);
+
+                // Fit content to view
+                if (chartRef.current) {
+                    chartRef.current.timeScale().fitContent();
+                }
+            }
+        });
     }, [currentSymbol, timeframe]);
+
+    // Add prediction overlay
+    useEffect(() => {
+        if (!chartRef.current || !candlestickSeriesRef.current || !prediction || !prediction.predicted_price) {
+            // Remove existing line if prediction is gone
+            if (predictionLineRef.current) {
+                candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+                predictionLineRef.current = null;
+            }
+            return;
+        }
+
+        const predictedPrice = prediction.predicted_price;
+        const currentPrice = prediction.current_price || predictedPrice;
+        const isBullish = predictedPrice > currentPrice;
+
+        // Remove old line
+        if (predictionLineRef.current) {
+            candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+        }
+
+        // Add new prediction line
+        const priceLine = candlestickSeriesRef.current.createPriceLine({
+            price: predictedPrice,
+            color: isBullish ? '#00E676' : '#FF1744',
+            lineWidth: 2,
+            lineStyle: 0, // Solid
+            axisLabelVisible: true,
+            title: `AI: $${predictedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        });
+
+        predictionLineRef.current = priceLine;
+    }, [prediction]);
 
     return (
         <div className="tradingview-container">
+            {isLoading && (
+                <div className="chart-loading">
+                    <div className="loading-spinner"></div>
+                    <p>Loading chart data...</p>
+                </div>
+            )}
             <div
-                ref={containerRef}
-                key={`${currentSymbol}-${timeframe}`}
-                style={{ height: '100%', width: '100%' }}
+                ref={chartContainerRef}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    visibility: isLoading ? 'hidden' : 'visible'
+                }}
             />
         </div>
     );
