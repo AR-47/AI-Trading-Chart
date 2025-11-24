@@ -207,21 +207,37 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     }, [prediction]);
 
     return (
-        <div className="tradingview-container">
-            {isLoading && (
-                <div className="chart-loading">
-                    <div className="loading-spinner"></div>
-                    <p>Loading chart data...</p>
+        <div className="chart-wrapper">
+            <div className="chart-header">
+                <div className="chart-title">
+                    <span className="symbol-name">{currentSymbol.replace('USDT', '/USDT')}</span>
+                    <span className="timeframe-badge">{timeframe}</span>
                 </div>
-            )}
-            <div
-                ref={chartContainerRef}
-                style={{
-                    width: '100%',
-                    height: '100%',
-                    visibility: isLoading ? 'hidden' : 'visible'
-                }}
-            />
+                {prediction && (
+                    <div className="chart-prediction-info">
+                        <span className="prediction-label">AI Target:</span>
+                        <span className={`prediction-value ${prediction.predicted_price > prediction.current_price ? 'bullish' : 'bearish'}`}>
+                            ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </span>
+                    </div>
+                )}
+            </div>
+            <div className="tradingview-container">
+                {isLoading && (
+                    <div className="chart-loading">
+                        <div className="loading-spinner"></div>
+                        <p>Loading chart data...</p>
+                    </div>
+                )}
+                <div
+                    ref={chartContainerRef}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                        visibility: isLoading ? 'hidden' : 'visible'
+                    }}
+                />
+            </div>
         </div>
     );
 }
