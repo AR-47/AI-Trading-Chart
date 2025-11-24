@@ -8,6 +8,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     const candlestickSeriesRef = useRef(null);
     const volumeSeriesRef = useRef(null);
     const predictionLineRef = useRef(null);
+    const predictionZoneRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
 
     // Map timeframes to Binance intervals
@@ -173,13 +174,16 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
         });
     }, [currentSymbol, timeframe]);
 
-    // Add prediction overlay
+    // Add prediction overlay with zone
     useEffect(() => {
         if (!chartRef.current || !candlestickSeriesRef.current || !prediction || !prediction.predicted_price) {
-            // Remove existing line if prediction is gone
             if (predictionLineRef.current) {
                 candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
                 predictionLineRef.current = null;
+            }
+            if (predictionZoneRef.current) {
+                chartRef.current.removeSeries(predictionZoneRef.current);
+                predictionZoneRef.current = null;
             }
             return;
         }
@@ -188,21 +192,45 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
         const currentPrice = prediction.current_price || predictedPrice;
         const isBullish = predictedPrice > currentPrice;
 
-        // Remove old line
+        // Remove old overlays
         if (predictionLineRef.current) {
             candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
         }
+        if (predictionZoneRef.current) {
+            chartRef.current.removeSeries(predictionZoneRef.current);
+        }
 
-        // Add new prediction line
+        // Add simple prediction zone (background shading)
+        const currentTime = Math.floor(Date.now() / 1000);
+        const futureTime = currentTime + (30 * 24 * 60 * 60); // 30 days ahead
+
+        const zoneUpper = Math.max(currentPrice, predictedPrice) * 1.02;
+        const zoneLower = Math.min(currentPrice, predictedPrice) * 0.98;
+
+        const zoneSeries = chartRef.current.addLineSeries({
+            color: isBullish ? 'rgba(0, 230, 118, 0.15)' : 'rgba(255, 23, 68, 0.15)',
+            lineWidth: 0,
+            priceLineVisible: false,
+            lastValueVisible: false,
+            crosshairMarkerVisible: false,
+        });
+
+        zoneSeries.setData([
+            { time: currentTime, value: zoneUpper },
+            { time: futureTime, value: zoneUpper }
+        ]);
+
+        // Add prediction line
         const priceLine = candlestickSeriesRef.current.createPriceLine({
             price: predictedPrice,
             color: isBullish ? '#00E676' : '#FF1744',
             lineWidth: 2,
-            lineStyle: 0, // Solid
+            lineStyle: 0,
             axisLabelVisible: true,
             title: `AI: $${predictedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
         });
 
+        predictionZoneRef.current = zoneSeries;
         predictionLineRef.current = priceLine;
     }, [prediction]);
 
