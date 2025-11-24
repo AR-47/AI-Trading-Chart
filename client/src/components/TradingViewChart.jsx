@@ -212,7 +212,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                 <div className="chart-title">
                     <span className="symbol-name">{currentSymbol.replace('USDT', '/USDT')}</span>
                     <span className="timeframe-badge">{timeframe}</span>
-                </div>
+                </div >
                 {prediction && (
                     <div className="chart-prediction-info">
                         <span className="prediction-label">AI Target:</span>
@@ -220,8 +220,9 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                             ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                     </div>
-                )}
-            </div>
+                )
+                }
+            </div >
             <div className="tradingview-container">
                 {isLoading && (
                     <div className="chart-loading">
@@ -238,7 +239,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                     }}
                 />
             </div>
-        </div>
+        </div >
     );
 }
 
