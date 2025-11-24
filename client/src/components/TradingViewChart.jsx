@@ -10,6 +10,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     const predictionLineRef = useRef(null);
     const predictionZoneRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [legendData, setLegendData] = useState(null);
 
     // Map timeframes to Binance intervals
     const getInterval = (tf) => {
@@ -51,6 +52,21 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
             }));
 
             setIsLoading(false);
+
+            // Set initial legend data to the latest candle
+            if (candlestickData.length > 0) {
+                const lastCandle = candlestickData[candlestickData.length - 1];
+                const lastVolume = volumeData[volumeData.length - 1];
+                setLegendData({
+                    open: lastCandle.open,
+                    high: lastCandle.high,
+                    low: lastCandle.low,
+                    close: lastCandle.close,
+                    volume: lastVolume ? lastVolume.value : 0,
+                    color: lastCandle.close >= lastCandle.open ? '#00E676' : '#FF1744'
+                });
+            }
+
             return { candlestickData, volumeData };
         } catch (error) {
             console.error('Error fetching chart data:', error);
@@ -133,6 +149,37 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
         chartRef.current = chart;
         candlestickSeriesRef.current = candlestickSeries;
         volumeSeriesRef.current = volumeSeries;
+
+        // Subscribe to crosshair move
+        chart.subscribeCrosshairMove(param => {
+            if (
+                param.point === undefined ||
+                !param.time ||
+                param.point.x < 0 ||
+                param.point.x > chartContainerRef.current.clientWidth ||
+                param.point.y < 0 ||
+                param.point.y > chartContainerRef.current.clientHeight
+            ) {
+                // Reset to last candle if hovering outside
+                // We need access to the latest data here, but it's not easily available in this closure without refs or state
+                // For simplicity, we'll just leave the last hovered value or do nothing
+                return;
+            }
+
+            const candle = param.seriesData.get(candlestickSeries);
+            const volume = param.seriesData.get(volumeSeries);
+
+            if (candle) {
+                setLegendData({
+                    open: candle.open,
+                    high: candle.high,
+                    low: candle.low,
+                    close: candle.close,
+                    volume: volume ? volume.value : 0,
+                    color: candle.close >= candle.open ? '#00E676' : '#FF1744'
+                });
+            }
+        });
 
         // Handle resize
         const handleResize = () => {
@@ -237,10 +284,21 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     return (
         <div className="chart-wrapper">
             <div className="chart-header">
-                <div className="chart-title">
-                    <span className="symbol-name">{currentSymbol.replace('USDT', '/USDT')}</span>
-                    <span className="timeframe-badge">{timeframe}</span>
-                </div >
+                <div className="chart-title-group">
+                    <div className="chart-title">
+                        <span className="symbol-name">{currentSymbol.replace('USDT', '/USDT')}</span>
+                        <span className="timeframe-badge">{timeframe}</span>
+                    </div>
+                    {legendData && (
+                        <div className="chart-legend">
+                            <span className="legend-item">O <span className="legend-value" style={{ color: legendData.color }}>{legendData.open.toFixed(2)}</span></span>
+                            <span className="legend-item">H <span className="legend-value" style={{ color: legendData.color }}>{legendData.high.toFixed(2)}</span></span>
+                            <span className="legend-item">L <span className="legend-value" style={{ color: legendData.color }}>{legendData.low.toFixed(2)}</span></span>
+                            <span className="legend-item">C <span className="legend-value" style={{ color: legendData.color }}>{legendData.close.toFixed(2)}</span></span>
+                            <span className="legend-item">Vol <span className="legend-value" style={{ color: legendData.color }}>{(legendData.volume / 1000).toFixed(2)}K</span></span>
+                        </div>
+                    )}
+                </div>
                 {prediction && (
                     <div className="chart-prediction-info">
                         <span className="prediction-label">AI Target:</span>
@@ -248,9 +306,8 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                             ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                     </div>
-                )
-                }
-            </div >
+                )}
+            </div>
             <div className="tradingview-container">
                 {isLoading && (
                     <div className="chart-loading">
@@ -267,7 +324,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                     }}
                 />
             </div>
-        </div >
+        </div>
     );
 }
 
