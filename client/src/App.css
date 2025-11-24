@@ -63,7 +63,7 @@
 }
 
 .side-panels {
-    width: 360px;
+    width: 420px;
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);

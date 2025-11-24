@@ -6,27 +6,32 @@ A professional, TradingView‑style web application for cryptocurrency trading w
 
 - **Live TradingView Charts** – Real‑time candlestick charts for multiple cryptocurrencies.
 - **AI Price Predictions** – Multi‑coin forecasts (BTC, ETH, SOL, BNB, ADA, XRP, DOT, DOGE, AVAX, POL) based on a Bitcoin‑centric LSTM model.
+- **Real Strategy Backtester** 🆕 – Test the AI's performance on real historical data over the last 30 days with genuine metrics (win rate, total return, profit factor, max drawdown).
+- **Performance Analytics** 🆕 – Interactive equity curve visualization showing day-by-day account value based on actual model predictions.
 - **Market Sentiment Gauge** – Visual bullish/bearish indicator derived from the prediction trend.
 - **Key Drivers** – Volume, trend strength, and volatility insights.
+- **Enhanced UI** 🆕 – Wider prediction panel (420px) for better readability and visual polish.
 - **Dark Theme & Responsive Design** – Professional look on desktop and mobile.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React 18 + Vite, TradingView Widget, Lucide React, CSS variables.
+- **Frontend:** React 18 + Vite, TradingView Widget, Recharts 🆕, Lucide React, CSS variables.
 - **Backend:** Flask, TensorFlow/Keras (LSTM), Pandas, NumPy, Binance REST API.
 
 ## 📦 Project Structure
 
 ```
-TradingProject/
-├── api_server.py          # Flask backend
+AI-Trading-Chart/
+├── api_server.py          # Flask backend with prediction & backtest endpoints
+├── backtest_engine.py     # Real backtesting engine 🆕
 ├── data_engine.py         # Script to fetch historical CSV data
 ├── train_model.ipynb      # Model training notebook
 ├── requirements.txt       # Python deps
 ├── models/                # Saved model & scaler
 ├── data/                  # **Not committed** – generated CSV files
 └── client/                # React frontend
-    └── src/                # Components, styles, etc.
+    └── src/               
+        └── components/    # React components including BacktestModal 🆕
 ```
 
 > **Note:** The `data/` folder (including `BTC_USD.csv`) is **not** tracked in the repository. It must be generated locally.
@@ -34,13 +39,13 @@ TradingProject/
 ## 🚀 Getting Started (From Scratch)
 
 ### Prerequisites
-- Python 3.8+ and `pip`
-- Node.js 16+ and `npm`
+- Python 3.8+ and `pip`
+- Node.js 16+ and `npm`
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your‑username/TradingProject.git
-cd TradingProject
+git clone https://github.com/your‑username/AI-Trading-Chart.git
+cd AI-Trading-Chart
 ```
 
 ### 2. Install Python Dependencies
@@ -83,10 +88,34 @@ Open the URL shown in the terminal (usually `http://localhost:5173`). The app wi
 ## 📡 API Endpoints
 - `GET /api/health` – Health check.
 - `GET /api/predict?symbol=BTCUSDT&timeframe=1d` – Returns prediction, confidence, current price, and sentiment data.
+- `GET /api/backtest?days=30&capital=10000` 🆕 – Runs real backtest on historical data, returns performance metrics and equity curve.
 - `GET /api/historical?symbol=BTCUSDT&timeframe=1d&limit=100` – Historical OHLCV data (fallback if TradingView widget is unavailable).
 
+## 🎯 New Features Explained
+
+### Real Strategy Backtester
+The backtesting engine (`backtest_engine.py`) analyzes the AI model's performance on **real historical data**:
+
+- **Real Model Predictions**: Uses the actual LSTM model to predict prices on past data
+- **Genuine Trading Simulation**: Simulates buying/selling based on model predictions (0.5% threshold)
+- **Authentic Metrics**:
+  - **Total Return**: Actual profit/loss percentage from following the AI
+  - **Win Rate**: Percentage of profitable trades
+  - **Profit Factor**: Ratio of gross profits to gross losses
+  - **Max Drawdown**: Worst peak-to-trough equity decline
+- **Visual Equity Curve**: Day-by-day account value chart showing real performance using Recharts
+- **Honest Results**: Shows both profitable and unprofitable periods - no simulated/fake data
+
+Access via the **"Test Strategy"** button in the Prediction Panel. The modal displays:
+- Interactive equity curve chart
+- 4 key performance metrics in card format
+- Trade summary (wins/losses count)
+- Starting vs ending capital
+
+Results reflect the model's genuine historical performance over the selected time period.
+
 ## ⚠️ Disclaimer
-This application is for **educational purposes only**. Predictions are based on historical patterns and are not financial advice. Use at your own risk.
+This application is for **educational purposes only**. Predictions are based on historical patterns and are not financial advice. Backtest results show past performance and do not guarantee future results. Use at your own risk.
 
 ---
 

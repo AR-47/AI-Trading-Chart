@@ -7,6 +7,7 @@ import joblib
 from datetime import datetime
 import os
 import requests
+import backtest_engine
 
 app = Flask(__name__)
 CORS(app)
@@ -210,6 +211,27 @@ def historical():
         return jsonify({
             'error': str(e),
             'message': 'Error fetching historical data'
+        }), 500
+
+@app.route('/api/backtest', methods=['GET'])
+def backtest():
+    """Run real backtest on historical data"""
+    try:
+        days = request.args.get('days', 30, type=int)
+        initial_capital = request.args.get('capital', 10000, type=float)
+        
+        print(f"Running backtest for {days} days with ${initial_capital} capital...")
+        result = backtest_engine.run_backtest(days=days, initial_capital=initial_capital)
+        
+        if 'error' in result:
+            return jsonify(result), 500
+        
+        return jsonify(result)
+        
+    except Exception as e:
+        return jsonify({
+            'error': str(e),
+            'message': 'Error running backtest'
         }), 500
 
 if __name__ == '__main__':

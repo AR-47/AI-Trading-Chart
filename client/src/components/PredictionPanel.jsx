@@ -5,10 +5,12 @@ import './PredictionPanel.css';
 import './PredictionPanelAnimations.css';
 import './EnhancedDropdowns.css';
 import FeatureImportance from './FeatureImportance';
+import BacktestModal from './BacktestModal';
 
 function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onTimeframeChange, onSymbolChange }) {
     const [timeframe, setTimeframe] = useState('1d');
     const [showExplanation, setShowExplanation] = useState(false);
+    const [showBacktest, setShowBacktest] = useState(false);
 
     const timeframeOptions = [
         { value: '30m', label: '30 Min' },
@@ -64,15 +66,24 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                     <Brain size={18} />
                     <span>AI Price Prediction</span>
                 </div>
-                <div className="status-badge">
-                    {loading ? (
-                        <span className="status-loading">Analyzing...</span>
-                    ) : (
-                        <span className={`status-active ${trend?.isPositive ? 'positive' : 'negative'}`}>
-                            <div className="pulse-dot" />
-                            Live
-                        </span>
-                    )}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <button
+                        className="test-strategy-btn"
+                        onClick={() => setShowBacktest(true)}
+                        title="View backtest results"
+                    >
+                        Test Strategy
+                    </button>
+                    <div className="status-badge">
+                        {loading ? (
+                            <span className="status-loading">Analyzing...</span>
+                        ) : (
+                            <span className={`status-active ${trend?.isPositive ? 'positive' : 'negative'}`}>
+                                <div className="pulse-dot" />
+                                Live
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -246,6 +257,9 @@ function PredictionPanel({ prediction, loading, currentPrice, currentSymbol, onT
                     </div>
                 )}
             </div>
+
+            {/* Backtest Modal */}
+            {showBacktest && <BacktestModal onClose={() => setShowBacktest(false)} />}
         </div>
     );
 }
