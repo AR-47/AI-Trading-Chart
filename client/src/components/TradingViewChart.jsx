@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
+import AnalysisChart from './AnalysisChart';
 import './TradingViewChart.css';
 
 function TradingViewChart({ currentSymbol, timeframe, prediction }) {
@@ -11,6 +12,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
     const predictionZoneRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
     const [legendData, setLegendData] = useState(null);
+    const [viewMode, setViewMode] = useState('AI'); // 'AI' or 'ANALYSIS'
 
     // Map timeframes to Binance intervals
     const getInterval = (tf) => {
@@ -77,7 +79,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
 
     // Initialize chart
     useEffect(() => {
-        if (!chartContainerRef.current) return;
+        if (!chartContainerRef.current || viewMode === 'ANALYSIS') return;
 
         // Create chart instance
         const chart = createChart(chartContainerRef.current, {
@@ -160,9 +162,6 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                 param.point.y < 0 ||
                 param.point.y > chartContainerRef.current.clientHeight
             ) {
-                // Reset to last candle if hovering outside
-                // We need access to the latest data here, but it's not easily available in this closure without refs or state
-                // For simplicity, we'll just leave the last hovered value or do nothing
                 return;
             }
 
@@ -200,11 +199,11 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                 chartRef.current = null;
             }
         };
-    }, []);
+    }, [viewMode]); // Re-run when viewMode changes
 
     // Load data when symbol or timeframe changes
     useEffect(() => {
-        if (!candlestickSeriesRef.current || !volumeSeriesRef.current) return;
+        if (!candlestickSeriesRef.current || !volumeSeriesRef.current || viewMode === 'ANALYSIS') return;
 
         const interval = getInterval(timeframe);
 
@@ -219,17 +218,27 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                 }
             }
         });
-    }, [currentSymbol, timeframe]);
+    }, [currentSymbol, timeframe, viewMode]);
 
     // Add prediction overlay with zone
     useEffect(() => {
+        if (viewMode === 'ANALYSIS') {
+            predictionLineRef.current = null;
+            predictionZoneRef.current = null;
+            return;
+        }
+
         if (!chartRef.current || !candlestickSeriesRef.current || !prediction || !prediction.predicted_price) {
-            if (predictionLineRef.current) {
-                candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+            if (candlestickSeriesRef.current && predictionLineRef.current) {
+                try {
+                    candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+                } catch (e) { }
                 predictionLineRef.current = null;
             }
-            if (predictionZoneRef.current) {
-                chartRef.current.removeSeries(predictionZoneRef.current);
+            if (chartRef.current && predictionZoneRef.current) {
+                try {
+                    chartRef.current.removeSeries(predictionZoneRef.current);
+                } catch (e) { }
                 predictionZoneRef.current = null;
             }
             return;
@@ -241,10 +250,14 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
 
         // Remove old overlays
         if (predictionLineRef.current) {
-            candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+            try {
+                candlestickSeriesRef.current.removePriceLine(predictionLineRef.current);
+            } catch (e) { }
         }
         if (predictionZoneRef.current) {
-            chartRef.current.removeSeries(predictionZoneRef.current);
+            try {
+                chartRef.current.removeSeries(predictionZoneRef.current);
+            } catch (e) { }
         }
 
         // Add simple prediction zone (background shading)
@@ -279,7 +292,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
 
         predictionZoneRef.current = zoneSeries;
         predictionLineRef.current = priceLine;
-    }, [prediction]);
+    }, [prediction, viewMode]);
 
     return (
         <div className="chart-wrapper">
@@ -289,7 +302,7 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                         <span className="symbol-name">{currentSymbol.replace('USDT', '/USDT')}</span>
                         <span className="timeframe-badge">{timeframe}</span>
                     </div>
-                    {legendData && (
+                    {viewMode === 'AI' && legendData && (
                         <div className="chart-legend">
                             <span className="legend-item">O <span className="legend-value" style={{ color: legendData.color }}>{legendData.open.toFixed(2)}</span></span>
                             <span className="legend-item">H <span className="legend-value" style={{ color: legendData.color }}>{legendData.high.toFixed(2)}</span></span>
@@ -299,30 +312,54 @@ function TradingViewChart({ currentSymbol, timeframe, prediction }) {
                         </div>
                     )}
                 </div>
-                {prediction && (
-                    <div className="chart-prediction-info">
-                        <span className="prediction-label">AI Target:</span>
-                        <span className={`prediction-value ${prediction.predicted_price > prediction.current_price ? 'bullish' : 'bearish'}`}>
-                            ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </span>
+
+                <div className="chart-controls">
+                    <div className="mode-toggle">
+                        <button
+                            className={`mode-btn ${viewMode === 'AI' ? 'active' : ''}`}
+                            onClick={() => setViewMode('AI')}
+                        >
+                            🤖 AI
+                        </button>
+                        <button
+                            className={`mode-btn ${viewMode === 'ANALYSIS' ? 'active' : ''}`}
+                            onClick={() => setViewMode('ANALYSIS')}
+                        >
+                            📉 Analysis
+                        </button>
                     </div>
-                )}
+
+                    {viewMode === 'AI' && prediction && (
+                        <div className="chart-prediction-info">
+                            <span className="prediction-label">AI Target:</span>
+                            <span className={`prediction-value ${prediction.predicted_price > prediction.current_price ? 'bullish' : 'bearish'}`}>
+                                ${prediction.predicted_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </span>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className="tradingview-container">
-                {isLoading && (
-                    <div className="chart-loading">
-                        <div className="loading-spinner"></div>
-                        <p>Loading chart data...</p>
-                    </div>
+                {viewMode === 'AI' ? (
+                    <>
+                        {isLoading && (
+                            <div className="chart-loading">
+                                <div className="loading-spinner"></div>
+                                <p>Loading chart data...</p>
+                            </div>
+                        )}
+                        <div
+                            ref={chartContainerRef}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                visibility: isLoading ? 'hidden' : 'visible'
+                            }}
+                        />
+                    </>
+                ) : (
+                    <AnalysisChart symbol={currentSymbol} />
                 )}
-                <div
-                    ref={chartContainerRef}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        visibility: isLoading ? 'hidden' : 'visible'
-                    }}
-                />
             </div>
         </div>
     );

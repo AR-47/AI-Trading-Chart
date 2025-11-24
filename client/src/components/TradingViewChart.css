@@ -122,6 +122,130 @@
     animation: spin 0.8s linear infinite;
 }
 
+.chart-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(19, 23, 34, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(30, 34, 45, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chart-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chart-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.symbol-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.timeframe-badge {
+    padding: 4px 10px;
+    background: rgba(41, 98, 255, 0.15);
+    border: 1px solid rgba(41, 98, 255, 0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+    color: #787B86;
+}
+
+.legend-item {
+    display: flex;
+    gap: 4px;
+}
+
+.legend-value {
+    font-weight: 500;
+}
+
+.chart-prediction-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prediction-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+}
+
+.prediction-value {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.prediction-value.bullish {
+    color: #00E676;
+}
+
+.prediction-value.bearish {
+    color: #FF1744;
+}
+
+.tradingview-container {
+    flex: 1;
+    position: relative;
+    background: #131722;
+    overflow: hidden;
+}
+
+.chart-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #131722;
+    z-index: 10;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #2962FF;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
 @keyframes spin {
     to {
         transform: rotate(360deg);
@@ -133,4 +257,43 @@
     color: rgba(255, 255, 255, 0.5);
     font-size: 14px;
     font-weight: 500;
+}
+
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mode-toggle {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-btn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mode-btn:hover {
+    color: #fff;
+}
+
+.mode-btn.active {
+    background: rgba(41, 98, 255, 0.2);
+    color: #2962FF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
