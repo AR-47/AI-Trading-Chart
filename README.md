@@ -44,7 +44,7 @@ AI-Trading-Chart/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your‑username/AI-Trading-Chart.git
+git clone https://github.com/AR-47/AI-Trading-Chart
 cd AI-Trading-Chart
 ```
 
